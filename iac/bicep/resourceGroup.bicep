@@ -9,4 +9,4 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-output testoutput stringg = 'hogehoge'
+output testoutput string = 'hogehoge'
