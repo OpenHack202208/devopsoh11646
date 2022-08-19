@@ -27,6 +27,6 @@ func TestSerializeErrorReturnsJsonIncludesCustomMessageUnit(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
-func TestThrowError(t *testing.T) {
+func TestSerializeErrorJustThrowError(t *testing.T) {
 	assert.FailNow(t, "Throw error in test code for test.")
 }
