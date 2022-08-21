@@ -1,0 +1,25 @@
+name: "challenge 5 poi"
+
+on:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: "build"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Check out"
+      - uses: actions/checkout@v3
+
+      - name: "login to Azure"
+      - uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and Push to ACR
+        run: |
+          az acr build --image devopsoh/api-poi::${{ github.run_id }} --registry devopsoh11646cr.azurecr.io --file apis/poi/web/Dockerfile --build-arg build_version=${{ github.run_id }} apis/poi/web
