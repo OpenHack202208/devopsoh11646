@@ -20,6 +20,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build and Push to ACR
+      - name: "Build and Push to ACR"
         run: |
           az acr build --image devopsoh/api-poi::${{ github.run_id }} --registry devopsoh11646cr.azurecr.io --file apis/poi/web/Dockerfile --build-arg build_version=${{ github.run_id }} apis/poi/web
