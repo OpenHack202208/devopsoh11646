@@ -32,6 +32,6 @@ jobs:
     steps:
       - name: "deploy to webapps"
         uses: azure/webapps-deploy@v2
-          with:
-            app-name: "devopsoh11646poi"
-            images: 'devopsoh11646cr.azurecr.io/devopsoh/api-poi:${{ github.run_id }}'
+        with:
+          app-name: "devopsoh11646poi"
+          images: "devopsoh11646cr.azurecr.io/devopsoh/api-poi:${{ github.run_id }}"
