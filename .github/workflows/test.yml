@@ -28,13 +28,13 @@ jobs:
         uses: reviewdog/action-detect-secrets@master
         id: detectsecrets
         with:
-          reporter: github-pr-review # Change reporter.
+          reporter: github-check 
           github_token: ${{ secrets.github_token }}
           fail_on_error: true
 
-#      - name: "Stop workflow if secrets detected"
-#        if: steps.detectsecrets.outputs.exitcode == 1
-#        run: exit 1
+      - name: "Stop workflow if secrets detected"
+        if: steps.detectsecrets.outputs.exitcode == 1
+        run: exit 1
 
       - name: "Setup .NET Core ${{ env.DOTNET_VERSION }}"
         uses: actions/setup-dotnet@v1
