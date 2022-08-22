@@ -24,41 +24,17 @@ jobs:
         with:
           fetch-depth: '0'
 
-#      - name: "Check for secrets with Gitleaks"
-#        id: gitleaks
-#        uses: DariuszPorowski/github-action-gitleaks@v2
-#        with:
-#          source: apis/poi
-#          config: gitleaksconfig.toml
-#          report_format: "sarif"
-#          fail: false
-
-      # Official Action for Gitleaks which has less configuration options
-      - name: "Check for secrets with Gitleaks"
-        id: gitleaks2
-        uses: zricethezav/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_CONFIG: "gitleaksconfig.toml"
-
-      - name: "Output from the gitleaks step"
-        run: |
-          echo "exitcode: ${{ steps.gitleaks.outputs.exitcode }}"
-          echo "result: ${{ steps.gitleaks.outputs.result }}"
-          echo "output: ${{ steps.gitleaks.outputs.output }}"
-          echo "command: ${{ steps.gitleaks.outputs.command }}"
-          echo "report: ${{ steps.gitleaks.outputs.report }}"
-
-      # SARIF upload for repositories with GitHub Advanced Security
-      - name: "Upload SARIF report"
-        if: steps.gitleaks.outputs.exitcode == 1
-        uses: github/codeql-action/upload-sarif@v1
+      - name: detect-secrets
+        uses: reviewdog/action-detect-secrets@master
+        id: detectsecrets
         with:
-          sarif_file: ${{ steps.gitleaks.outputs.report }}
+          reporter: github-pr-review # Change reporter.
+          github_token: ${{ secrets.github_token }}
+          fail_on_error: true
 
-      - name: "Stop workflow if secrets detected"
-        if: steps.gitleaks.outputs.exitcode == 1
-        run: exit 1
+#      - name: "Stop workflow if secrets detected"
+#        if: steps.detectsecrets.outputs.exitcode == 1
+#        run: exit 1
 
       - name: "Setup .NET Core ${{ env.DOTNET_VERSION }}"
         uses: actions/setup-dotnet@v1
