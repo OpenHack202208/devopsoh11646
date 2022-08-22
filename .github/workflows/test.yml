@@ -24,21 +24,22 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: "Check for secrets with Gitleaks"
-        id: gitleaks
-        uses: DariuszPorowski/github-action-gitleaks@v2
-        with:
-          source: apis/poi
-          config: gitleaksconfig.toml
-          report_format: "sarif"
-          fail: false
+#      - name: "Check for secrets with Gitleaks"
+#        id: gitleaks
+#        uses: DariuszPorowski/github-action-gitleaks@v2
+#        with:
+#          source: apis/poi
+#          config: gitleaksconfig.toml
+#          report_format: "sarif"
+#          fail: false
 
       # Official Action for Gitleaks which has less configuration options
-      # - name: "Check for secrets with Gitleaks"
-      #   id: gitleaks2
-      #   uses: zricethezav/gitleaks-action@master
-      #   with:
-      #     config-path: "gitleaksconfig.toml"
+      - name: "Check for secrets with Gitleaks"
+        id: gitleaks2
+        uses: zricethezav/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: "gitleaksconfig.toml"
 
       - name: "Output from the gitleaks step"
         run: |
