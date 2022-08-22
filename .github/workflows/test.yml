@@ -27,7 +27,7 @@ jobs:
      # Official Action for Gitleaks which has less configuration options
       - name: "Check for secrets with Gitleaks"
         id: gitleaks2
-        uses: zricethezav/gitleaks-action@v1.6.0
+        uses: gitleaks/gitleaks-action@v1.6.0
         with:
           config-path: "gitleaksconfig.toml"
 
