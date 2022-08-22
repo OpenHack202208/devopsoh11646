@@ -24,12 +24,17 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: detect-secrets
-        uses: Hacks4Snacks/secret-search@main
+      - name: TruffleHog OSS
         id: detectsecrets
+        uses: trufflesecurity/trufflehog@v3.4.3
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --branch main
 
       - name: "Stop workflow if secrets detected"
-        if: steps.detectsecrets.outputs.exitcode == 1
+        if: steps.detectsecrets.outputs.exitcode != 0
         run: exit 1
 
       - name: "Setup .NET Core ${{ env.DOTNET_VERSION }}"
