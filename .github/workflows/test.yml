@@ -22,22 +22,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: '0'
+          fetch-depth: "0"
 
-     # Official Action for Gitleaks which has less configuration options
-#      - name: "Check for secrets with Gitleaks"
-##        id: gitleaks
- #       uses: gitleaks/gitleaks-action@v1.6.0
- #       with:
- #         config-path: "gitleaksconfig.toml"
+      # Official Action for Gitleaks which has less configuration options
+      #      - name: "Check for secrets with Gitleaks"
+      #        id: gitleaks
+      #        uses: gitleaks/gitleaks-action@v1.6.0
+      #        with:
+      #          config-path: "gitleaksconfig.toml"
+
+      #      - name: "Check for secrets with Gitleaks"
+      #        id: gitleaks
+      #        uses: DariuszPorowski/github-action-gitleaks@v1
+      #        with:
+      #          path: apis/poi
+      #          config_path: gitleaksconfig.toml
+      #          format: "sarif"
+      #          fail: false
 
       - name: "Check for secrets with Gitleaks"
         id: gitleaks
-        uses: DariuszPorowski/github-action-gitleaks@v1
+        uses: DariuszPorowski/github-action-gitleaks@v2.0.1
         with:
-          path: apis/poi
-          config_path: gitleaksconfig.toml
-          format: "sarif"
+          source: apis/poi
+          config: gitleaksconfig.toml
+          report_format: "sarif"
           fail: false
 
       - name: "Output from the gitleaks step"
