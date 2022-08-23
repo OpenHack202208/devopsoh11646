@@ -40,6 +40,9 @@ jobs:
       #          format: "sarif"
       #          fail: false
 
+      - run: |
+          sudo chown -R root:root $GITHUB_WORKSPACE
+
       - name: "Check for secrets with Gitleaks"
         id: gitleaks
         uses: DariuszPorowski/github-action-gitleaks@v2.0.1
