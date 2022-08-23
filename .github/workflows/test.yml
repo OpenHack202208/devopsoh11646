@@ -33,7 +33,7 @@ jobs:
 
       - name: "Check for secrets with Gitleaks"
         id: gitleaks
-        uses: DariuszPorowski/github-action-gitleaks@v2
+        uses: DariuszPorowski/github-action-gitleaks@v1
         with:
           source: apis/poi
           config: gitleaksconfig.toml
