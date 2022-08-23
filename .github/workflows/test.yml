@@ -25,11 +25,20 @@ jobs:
           fetch-depth: '0'
 
      # Official Action for Gitleaks which has less configuration options
+#      - name: "Check for secrets with Gitleaks"
+##        id: gitleaks
+ #       uses: gitleaks/gitleaks-action@v1.6.0
+ #       with:
+ #         config-path: "gitleaksconfig.toml"
+
       - name: "Check for secrets with Gitleaks"
-        id: gitleaks2
-        uses: gitleaks/gitleaks-action@v1.6.0
+        id: gitleaks
+        uses: DariuszPorowski/github-action-gitleaks@v2
         with:
-          config-path: "gitleaksconfig.toml"
+          source: apis/poi
+          config: gitleaksconfig.toml
+          report_format: "sarif"
+          fail: false
 
       - name: "Output from the gitleaks step"
         run: |
