@@ -41,11 +41,11 @@ jobs:
       #          fail: false
 
       - run: |
-          git config --global --add safe.directory /github/workspace
+          sudo chown -R root:root $GITHUB_WORKSPACE
 
       - name: "Check for secrets with Gitleaks"
         id: gitleaks
-        uses: DariuszPorowski/github-action-gitleaks@v2.0.1
+        uses: DariuszPorowski/github-action-gitleaks@v2
         with:
           source: apis/poi
           config: gitleaksconfig.toml
@@ -70,6 +70,9 @@ jobs:
       - name: "Stop workflow if secrets detected"
         if: steps.gitleaks.outputs.exitcode == 1
         run: exit 1
+
+      - run: |
+          sudo chown -R runner:runner $GITHUB_WORKSPACE
 
       - name: "Setup .NET Core ${{ env.DOTNET_VERSION }}"
         uses: actions/setup-dotnet@v1
