@@ -15,9 +15,9 @@ env:
   WORKDIR: "apis/poi"
 
 ## Set defaults for GitHub Actions runner
-#defaults:
-#  run:
-#    working-directory: "apis/poi"
+defaults:
+  run:
+    working-directory: "apis/poi"
 
 jobs:
   buildtest:
@@ -25,12 +25,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+
+      - run: |
+          sudo chown -R root:root $GITHUB_WORKSPACE
 
       - name: "Check for secrets with Gitleaks"
         id: gitleaks
         uses: DariuszPorowski/github-action-gitleaks@v2
         with:
-          source: ${{ github.workspace }}/apis/poi
+          source: apis/poi
           config: gitleaksconfig.toml
           report_format: "sarif"
           fail: false
@@ -53,6 +58,9 @@ jobs:
       - name: "Stop workflow if secrets detected"
         if: steps.gitleaks.outputs.exitcode == 1
         run: exit 1
+
+      - run: |
+          sudo chown -R runner:runner $GITHUB_WORKSPACE
 
       - name: "Setup .NET Core ${{ env.DOTNET_VERSION }}"
         uses: actions/setup-dotnet@v2
