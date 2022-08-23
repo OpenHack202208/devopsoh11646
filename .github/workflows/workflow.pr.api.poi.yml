@@ -15,9 +15,9 @@ env:
   WORKDIR: "apis/poi"
 
 ## Set defaults for GitHub Actions runner
-#defaults:
-#  run:
-#    working-directory: "apis/poi"
+defaults:
+  run:
+    working-directory: "apis/poi"
 
 jobs:
   buildtest:
