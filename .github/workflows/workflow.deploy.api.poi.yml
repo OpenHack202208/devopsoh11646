@@ -1,4 +1,4 @@
-name: "challenge 6 poi"
+name: "Deploy - api-poi (.NET Core)"
 
 on:
   push:
@@ -10,10 +10,24 @@ jobs:
   build:
     name: "build"
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["csharp"]
 
     steps:
       - name: "Check out"
         uses: actions/checkout@v3
+
+      #Initialize the CodeQL tools for scanning
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
 
       - name: "login to Azure"
         uses: Azure/login@v1
@@ -23,6 +37,9 @@ jobs:
       - name: "Build and Push to ACR"
         run: |
           az acr build --image devopsoh/api-poi:${{ github.run_id }} --registry devopsoh11646cr.azurecr.io --file apis/poi/web/Dockerfile --build-arg build_version=${{ github.run_id }} apis/poi/web
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
 
   staging:
     name: "deploy to staging slot"
