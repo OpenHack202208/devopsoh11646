@@ -1,4 +1,4 @@
 {
     "storageconnstring": "DefaultEndpointsProtocol=https;AccountName=devopsoh11646statest;AccountKey=UMuLr/3u7y3FsbQgkUPERYC4TGnbcracGZz5h4bne8TkrpCvW/7eo0i2FcRIfDPkBY6YhQo8RYxo+AStSa2DBA==;EndpointSuffix=core.windows.net",
-    "samplepw": "demo!P@55w0rd123"
+    "samplepw1": "demo!P@55w0rd123""samplepw2": "demo!P@55w0rd123"
 }
