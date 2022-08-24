@@ -39,6 +39,7 @@ jobs:
           config: gitleaksconfig.toml
           report_format: "sarif"
           fail: false
+          log_level: debug
 
       - name: "Output from the gitleaks step"
         run: |
