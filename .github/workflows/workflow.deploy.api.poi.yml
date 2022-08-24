@@ -27,7 +27,6 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-          config-file: ./.github/codeql/codeql-config.yml
           languages: ${{ matrix.language }}
 
       - name: "login to Azure"
@@ -40,6 +39,7 @@ jobs:
           az acr build --image devopsoh/api-poi:${{ github.run_id }} --registry devopsoh11646cr.azurecr.io --file apis/poi/web/Dockerfile --build-arg build_version=${{ github.run_id }} apis/poi/web
 
       - name: Perform CodeQL Analysis
+        working-directory: ./apis/poi
         uses: github/codeql-action/analyze@v2
 
   staging:
