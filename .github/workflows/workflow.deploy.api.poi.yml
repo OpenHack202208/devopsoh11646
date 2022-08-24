@@ -6,10 +6,6 @@ on:
       - "main"
   workflow_dispatch:
 
-defaults:
-  run:
-    working-directory: "apis/poi"
-
 jobs:
   build:
     name: "build"
@@ -33,6 +29,12 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
       - name: "login to Azure"
         uses: Azure/login@v1
         with:
@@ -41,9 +43,6 @@ jobs:
       - name: "Build and Push to ACR"
         run: |
           az acr build --image devopsoh/api-poi:${{ github.run_id }} --registry devopsoh11646cr.azurecr.io --file apis/poi/web/Dockerfile --build-arg build_version=${{ github.run_id }} apis/poi/web
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
 
   staging:
     name: "deploy to staging slot"
