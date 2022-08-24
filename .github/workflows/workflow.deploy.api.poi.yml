@@ -30,7 +30,6 @@ jobs:
         id: gitleaks
         uses: DariuszPorowski/github-action-gitleaks@v2
         with:
-          source: apis/poi
           config: gitleaksconfig.toml
           report_format: "sarif"
           fail: false
