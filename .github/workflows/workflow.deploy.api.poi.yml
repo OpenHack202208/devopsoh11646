@@ -22,6 +22,38 @@ jobs:
     steps:
       - name: "Check out"
         uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+
+      # Gitleaks-scan
+      - name: "Check for secrets with Gitleaks"
+        id: gitleaks
+        uses: DariuszPorowski/github-action-gitleaks@v2
+        with:
+          source: apis/poi
+          config: gitleaksconfig.toml
+          report_format: "sarif"
+          fail: false
+          log_level: debug
+
+      - name: "Output from the gitleaks step"
+        run: |
+          echo "exitcode: ${{ steps.gitleaks.outputs.exitcode }}"
+          echo "result: ${{ steps.gitleaks.outputs.result }}"
+          echo "output: ${{ steps.gitleaks.outputs.output }}"
+          echo "command: ${{ steps.gitleaks.outputs.command }}"
+          echo "report: ${{ steps.gitleaks.outputs.report }}"
+
+      # SARIF upload for repositories with GitHub Advanced Security
+      - name: "Upload SARIF report"
+        if: steps.gitleaks.outputs.exitcode == 1
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.gitleaks.outputs.report }}
+
+      - name: "Stop workflow if secrets detected"
+        if: steps.gitleaks.outputs.exitcode == 1
+        run: exit 1
 
       #Initialize the CodeQL tools for scanning
       - name: Initialize CodeQL
