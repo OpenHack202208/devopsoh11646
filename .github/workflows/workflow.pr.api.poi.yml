@@ -28,8 +28,8 @@ jobs:
         with:
           fetch-depth: "0"
 
-      - run: |
-          sudo chown -R root:root $GITHUB_WORKSPACE
+#      - run: |
+#          sudo chown -R root:root $GITHUB_WORKSPACE
 
       - name: "Check for secrets with Gitleaks"
         id: gitleaks
