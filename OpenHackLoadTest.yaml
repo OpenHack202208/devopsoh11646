@@ -1,0 +1,4 @@
+testName: OpenHackAPITest
+testPlan: OpenHackLoadTest.jmx
+description:
+engineInstances: 3

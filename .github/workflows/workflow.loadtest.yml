@@ -1,0 +1,25 @@
+name: "Load Test"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  loadtest:
+    name: "build"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Check out"
+        uses: actions/checkout@v3
+
+      - name: "login to Azure"
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: "Azure Load Testing"
+        uses: azure/load-testing@v1
+        with:
+          loadTestConfigFile: "OpenHackLoadTest.yaml"
+          loadTestResource: "LoadTest-forOpenHack"
+          resourceGroup: "devopsoh11646rg"
